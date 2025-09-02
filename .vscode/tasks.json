@@ -8,6 +8,7 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
+                "db.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-lsqlite3"
