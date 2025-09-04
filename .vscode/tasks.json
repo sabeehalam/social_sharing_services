@@ -9,6 +9,7 @@
                 "-g",
                 "${file}",
                 "db.cpp",
+                "user_function.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-lsqlite3"

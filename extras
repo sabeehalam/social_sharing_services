@@ -13,4 +13,10 @@
         "email TEXT, "
         "age INTEGER, "
         "FOREIGN KEY(user_id) REFERENCES users(id));");
+
+    if (registerUser(db)) {
+        std::cout << "Registration complete.\n";
+    } else {
+        std::cout << "Registration failed.\n";
+    }
 */

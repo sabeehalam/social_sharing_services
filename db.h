@@ -13,4 +13,10 @@ void createTable(sqlite3* db, const std::string& createQuery);
 // User registration
 bool registerUser(sqlite3* db);
 
+// User login
+bool loginUser(sqlite3* db);
+
+// User logout
+void logoutUser();
+
 #endif

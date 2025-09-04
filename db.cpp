@@ -1,6 +1,9 @@
 #include "db.h"
 #include <iostream>
 
+// Global variable to track current logged-in user
+int currentUserId = -1;
+
 sqlite3* openDatabase(const std::string& filename) {
     sqlite3* db;
     if (sqlite3_open(filename.c_str(), &db) == SQLITE_OK) {
@@ -92,3 +95,65 @@ bool registerUser(sqlite3* db) {
     std::cout << "✅ User registered successfully!\n";
     return true;
 }
+
+bool loginUser(sqlite3* db) {
+    std::cout << "=== User Login ===\n";
+    std::string username, password;
+
+    std::cout << "Enter Username: ";
+    std::cin >> username;
+
+    // ✅ Step 1: Check if username exists
+    sqlite3_stmt* checkStmt;
+    std::string checkSql = "SELECT id FROM users WHERE username = ?;";
+    if (sqlite3_prepare_v2(db, checkSql.c_str(), -1, &checkStmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare username check: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+    sqlite3_bind_text(checkStmt, 1, username.c_str(), -1, SQLITE_STATIC);
+
+    if (sqlite3_step(checkStmt) != SQLITE_ROW) {
+        std::cout << "⚠️ Username not found. Please register first.\n";
+        sqlite3_finalize(checkStmt);
+        return false;
+    }
+    sqlite3_finalize(checkStmt);
+
+    // ✅ Step 2: Ask for password
+    std::cout << "Enter Password: ";
+    std::cin >> password;
+
+    // ✅ Step 3: Verify username + password
+    sqlite3_stmt* stmt;
+    std::string sql = "SELECT id FROM users WHERE username = ? AND password = ?;";
+
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare login query: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+
+    sqlite3_bind_text(stmt, 1, username.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, password.c_str(), -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        currentUserId = sqlite3_column_int(stmt, 0);
+        std::cout << "✅ Login successful! Welcome, " << username << ".\n";
+        sqlite3_finalize(stmt);
+        return true;
+    } else {
+        std::cout << "❌ Incorrect password.\n";
+        sqlite3_finalize(stmt);
+        return false;
+    }
+}
+
+
+void logoutUser() {
+    if (currentUserId != -1) {
+        std::cout << "👋 User logged out successfully.\n";
+        currentUserId = -1;
+    } else {
+        std::cout << "⚠️ No user is currently logged in.\n";
+    }
+}
+
