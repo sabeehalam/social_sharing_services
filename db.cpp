@@ -29,8 +29,27 @@ void createTable(sqlite3* db, const std::string& createQuery) {
     }
 }
 
-bool registerUser(sqlite3* db, const std::string& username, const std::string& password,
-                  const std::string& fullname, const std::string& email, int age) {
+bool registerUser(sqlite3* db) {
+    std::cout << "=== User Registration ===\n";
+    std::string username, password, fullname, email;
+    int age;
+
+    std::cout << "Enter Username: ";
+    std::cin >> username;
+
+    std::cout << "Enter Password: ";
+    std::cin >> password;
+
+    std::cin.ignore();
+    std::cout << "Enter Full Name: ";
+    std::getline(std::cin, fullname);
+
+    std::cout << "Enter Email: ";
+    std::getline(std::cin, email);
+
+    std::cout << "Enter Age: ";
+    std::cin >> age;
+
     sqlite3_stmt* stmt;
 
     // Insert into users table
@@ -70,6 +89,6 @@ bool registerUser(sqlite3* db, const std::string& username, const std::string& p
     }
 
     sqlite3_finalize(stmt);
-    std::cout << "User registered successfully!" << std::endl;
+    std::cout << "✅ User registered successfully!\n";
     return true;
 }

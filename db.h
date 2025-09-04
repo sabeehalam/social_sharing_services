@@ -11,7 +11,6 @@ void closeDatabase(sqlite3* db);
 void createTable(sqlite3* db, const std::string& createQuery);
 
 // User registration
-bool registerUser(sqlite3* db, const std::string& username, const std::string& password,
-                  const std::string& fullname, const std::string& email, int age);
+bool registerUser(sqlite3* db);
 
 #endif
