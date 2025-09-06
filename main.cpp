@@ -9,7 +9,7 @@ int main() {
     sqlite3* db = openDatabase("test.db");
     if (!db) return 1;
     
-    int choice;
+    /*int choice;
     bool running = true;
 
     while (running) {
@@ -34,7 +34,7 @@ int main() {
                 std::cout << "Invalid option. Try again.\n";
                 break;
         }
-    }
+    }*/
 
 
     closeDatabase(db);
