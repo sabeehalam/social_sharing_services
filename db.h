@@ -4,23 +4,22 @@
 #include <sqlite3.h>
 #include <string>
 
+// Global variables for session
+extern int currentUserId;
+extern std::string currentUserRole;
+
+// Database helpers
 sqlite3* openDatabase(const std::string& filename);
 void closeDatabase(sqlite3* db);
-
-// Generic table creation
 void createTable(sqlite3* db, const std::string& createQuery);
 
-// User registration
+// Authentication
 bool registerUser(sqlite3* db);
-
-// User login
 bool loginUser(sqlite3* db);
-
-// User logout
 void logoutUser();
 
 bool executeNonQuery(sqlite3* db, const std::string& query);
-
 bool executeSelect(sqlite3* db, const std::string& query, int (*callback)(void*, int, char**, char**), void* data);
 
-#endif
+
+#endif // DB_H

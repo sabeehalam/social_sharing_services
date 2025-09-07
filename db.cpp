@@ -24,8 +24,6 @@ void createTable(sqlite3* db, const std::string& createQuery) {
     if (sqlite3_exec(db, createQuery.c_str(), nullptr, nullptr, &errMsg) != SQLITE_OK) {
         std::cerr << "Error creating table: " << errMsg << std::endl;
         sqlite3_free(errMsg);
-    } else {
-        std::cout << "Table created successfully." << std::endl;
     }
 }
 
@@ -50,6 +48,3 @@ bool executeSelect(sqlite3* db, const std::string& query, int (*callback)(void*,
     }
     return true;
 }
-
-
-
