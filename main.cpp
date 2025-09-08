@@ -4,32 +4,11 @@
 
 // Extern global variable from db.cpp
 extern int currentUserId;
+extern int currentUserRole;
 
 int main() {
     sqlite3* db = openDatabase("test.db");
     if (!db) return 1;
-
-    // Create tables
-    createTable(db, "CREATE TABLE IF NOT EXISTS users ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    "username TEXT UNIQUE, "
-                    "password TEXT, "
-                    "role TEXT CHECK(role IN ('admin','user')) NOT NULL DEFAULT 'user');");
-
-    createTable(db, "CREATE TABLE IF NOT EXISTS members ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    "user_id INTEGER, "
-                    "fullname TEXT, "
-                    "email TEXT, "
-                    "age INTEGER, "
-                    "FOREIGN KEY(user_id) REFERENCES users(id));");
-
-    createTable(db, "CREATE TABLE IF NOT EXISTS skills ("
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    "user_id INTEGER, "
-                    "skill_name TEXT, "
-                    "description TEXT, "
-                    "FOREIGN KEY(user_id) REFERENCES users(id));");
 
     int choice;
     bool running = true;
